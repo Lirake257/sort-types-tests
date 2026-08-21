@@ -81,40 +81,17 @@ void generate_e_arr_save(size_t n, std::string filename, size_t m){
 
 std::vector<long long> test10_res(const int* arr, const int &arrlen, void (*sort)(int*, size_t, long long&, long long&, long long&)){
     std::vector<long long> res{0,0,0};
+    int *arr_copy = new int[arrlen];
+
     for(int k=0; k<10; k++){
         long long sort_time=0, if_count=0, swap_count=0;
-        int *arr_copy = new int[arrlen];
+
         for (int i=0; i<arrlen; i++){
             arr_copy[i] = arr[i];
         }
         
         sort(arr_copy, arrlen, sort_time, if_count, swap_count);
-        if(sort_check(arr_copy,arrlen)){
-            res[0] += sort_time;
-            res[1] += if_count;
-            res[2] += swap_count;
-        }
-        else{
-            std::cout << "sort error" << std::endl;
-        }
-        
-    }
-    res[0]/=10.0;
-    res[1]/=10.0;
-    res[2]/=10.0;
-    return res;
-}
 
-std::vector<long long> test10merge_res(const int* arr, const int &arrlen, void (*sort)(int*, size_t, long long&, long long&, long long&, bool, size_t)){
-    std::vector<long long> res{0,0,0};
-    for(int k=0; k<10; k++){
-        long long sort_time=0, if_count=0, swap_count=0;
-        int *arr_copy = new int[arrlen];
-        for (int i=0; i<arrlen; i++){
-            arr_copy[i] = arr[i];
-        }
-        
-        sort(arr_copy, arrlen, sort_time, if_count, swap_count, true, 0);
         if(sort_check(arr_copy,arrlen)){
             res[0] += sort_time;
             res[1] += if_count;
@@ -123,8 +100,8 @@ std::vector<long long> test10merge_res(const int* arr, const int &arrlen, void (
         else{
             std::cout << "sort error" << std::endl;
         }
-        
     }
+    delete []arr_copy;
     res[0]/=10.0;
     res[1]/=10.0;
     res[2]/=10.0;
@@ -164,8 +141,10 @@ void res_print(int n, std::vector<std::vector<std::vector<long long>>> arr, std:
         std::cout << std::setw(col_wid) << std::right << "Insertion";
         std::cout << std::setw(col_wid) << std::right << "Selection";
         std::cout << std::setw(col_wid) << std::right << "Shell";
-        std::cout << std::setw(col_wid) << std::right << "Merge\n";
-        std::cout << std::string(col_wid*6, '-') << std::endl;
+        std::cout << std::setw(col_wid) << std::right << "Merge";
+        std::cout << std::setw(col_wid) << std::right << "Quick\n";
+        
+        std::cout << std::string(col_wid*7, '-') << std::endl;
         std::cout << std::setw(col_wid) << std::right << "Time";
 
         file << std::setw(col_wid) << std::right << "";
@@ -173,27 +152,28 @@ void res_print(int n, std::vector<std::vector<std::vector<long long>>> arr, std:
         file << std::setw(col_wid) << std::right << "Insertion";
         file << std::setw(col_wid) << std::right << "Selection";
         file << std::setw(col_wid) << std::right << "Shell";
-        file << std::setw(col_wid) << std::right << "Merge\n";
-        file << std::string(col_wid*6, '-') << std::endl;
+        file << std::setw(col_wid) << std::right << "Merge";
+        file << std::setw(col_wid) << std::right << "Quick\n";
+        file << std::string(col_wid*7, '-') << std::endl;
         file << std::setw(col_wid) << std::right << "Time";
 
-        for(int j=0; j<5; j++){
+        for(int j=0; j<6; j++){
             std::cout << std::setw(col_wid) << std::right << arr[j][dataset][0];
             file << std::setw(col_wid) << std::right << arr[j][dataset][0];
         }
         std::cout << std::endl << std::setw(col_wid) << std::right << "Comparisons";
         file << std::endl << std::setw(col_wid) << std::right << "Comparisons";
-        for(int j=0; j<5; j++){
+        for(int j=0; j<6; j++){
             std::cout << std::setw(col_wid) << std::right << arr[j][dataset][1];
             file << std::setw(col_wid) << std::right << arr[j][dataset][1];
         }
         std::cout << std::endl << std::setw(col_wid) << std::right << "Swaps";
         file << std::endl << std::setw(col_wid) << std::right << "Swaps";
-        for(int j=0; j<5; j++){
+        for(int j=0; j<6; j++){
             std::cout << std::setw(col_wid) << std::right << arr[j][dataset][2];
             file << std::setw(col_wid) << std::right << arr[j][dataset][2];
-        }std::cout << std::endl << std::string(col_wid*6, '-')<<std::endl;
-        file << std::endl << std::string(col_wid*6, '-')<<std::endl;
+        }std::cout << std::endl << std::string(col_wid*7, '-')<<std::endl;
+        file << std::endl << std::string(col_wid*7, '-')<<std::endl;
     }
 }
 
@@ -225,32 +205,34 @@ void res100000_print(int n, std::vector<std::vector<std::vector<long long>>> arr
         }
         std::cout << std::setw(col_wid) << std::right << "";
         std::cout << std::setw(col_wid) << std::right << "Shell";
-        std::cout << std::setw(col_wid) << std::right << "Merge\n";
-        std::cout << std::string(col_wid*6, '-') << std::endl;
+        std::cout << std::setw(col_wid) << std::right << "Merge";
+        std::cout << std::setw(col_wid) << std::right << "Quick\n";
+        std::cout << std::string(col_wid*7, '-') << std::endl;
         std::cout << std::setw(col_wid) << std::right << "Time";
 
         file << std::setw(col_wid) << std::right << "";
         file << std::setw(col_wid) << std::right << "Shell";
-        file << std::setw(col_wid) << std::right << "Merge\n";
-        file << std::string(col_wid*6, '-') << std::endl;
+        file << std::setw(col_wid) << std::right << "Merge";
+        file << std::setw(col_wid) << std::right << "Quick\n";
+        file << std::string(col_wid*7, '-') << std::endl;
         file << std::setw(col_wid) << std::right << "Time";
 
-        for(int j=0; j<2; j++){
+        for(int j=0; j<3; j++){
             std::cout << std::setw(col_wid) << std::right << arr[j][dataset][0];
             file << std::setw(col_wid) << std::right << arr[j][dataset][0];
         }
         std::cout << std::endl << std::setw(col_wid) << std::right << "Comparisons";
         file << std::endl << std::setw(col_wid) << std::right << "Comparisons";
-        for(int j=0; j<2; j++){
+        for(int j=0; j<3; j++){
             std::cout << std::setw(col_wid) << std::right << arr[j][dataset][1];
             file << std::setw(col_wid) << std::right << arr[j][dataset][1];
         }
         std::cout << std::endl << std::setw(col_wid) << std::right << "Swaps";
         file << std::endl << std::setw(col_wid) << std::right << "Swaps";
-        for(int j=0; j<2; j++){
+        for(int j=0; j<3; j++){
             std::cout << std::setw(col_wid) << std::right << arr[j][dataset][2];
             file << std::setw(col_wid) << std::right << arr[j][dataset][2];
-        }std::cout << std::endl << std::string(col_wid*6, '-')<<std::endl;
-        file << std::endl << std::string(col_wid*6, '-')<<std::endl;
+        }std::cout << std::endl << std::string(col_wid*7, '-')<<std::endl;
+        file << std::endl << std::string(col_wid*7, '-')<<std::endl;
     }
 }
