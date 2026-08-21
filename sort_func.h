@@ -8,8 +8,9 @@ void insertion_sort(int* arr, size_t arrlen, long long &sort_time, long long &if
 
 void bubble_sort(int* arr, size_t arrlen, long long &sort_time, long long &if_count, long long &swap_count);
 
-void merge(int* arr, size_t left, size_t mid, size_t right, long long &if_count, long long &swap_count);
-void merge_sort(int* arr, size_t right, long long &sort_time, long long &if_count, long long &swap_count, bool first_call=true, size_t left=0);
+void merge_sort_ob(int* arr, size_t arrlen, long long &sort_time, long long &if_count, long long &swap_count);
 
 void Shell_sort(int* arr, size_t arrlen, long long &sort_time, long long &if_count, long long &swap_count);
+
+void quick_sort_ob(int* arr, size_t arrlen, long long &sort_time, long long &if_count, long long &swap_count);
 #endif
