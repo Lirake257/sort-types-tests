@@ -83,28 +83,23 @@ void merge(int* arr, size_t left, size_t mid, size_t right, long long &if_count,
         k++;
     }
 }
-void merge_sort(int* arr, size_t right, long long &sort_time, long long &if_count, long long &swap_count, bool first_call, size_t left){
-    if(first_call){
-        auto start_time = std::chrono::high_resolution_clock::now();
+void merge_sort(int* arr, size_t right, long long &if_count, long long &swap_count, size_t left){
+    if(left>=right){return;}
+    size_t mid = left + (right - left)/2; // вместо (left+right)/2
+    merge_sort(arr, mid, if_count, swap_count, left);
+    merge_sort(arr, right, if_count, swap_count, mid+1);
+    merge(arr,left,mid,right, if_count, swap_count);
+}
+void merge_sort_ob(int* arr, size_t arrlen, long long &sort_time, long long &if_count, long long &swap_count){
+    auto start_time = std::chrono::high_resolution_clock::now();
 
-        right--;
-        first_call=false;
-        if(left>=right){return;}
-        size_t mid = left + (right - left)/2; // вместо (left+right)/2
-        merge_sort(arr, mid, sort_time, if_count, swap_count, first_call, left);
-        merge_sort(arr, right, sort_time, if_count, swap_count, first_call, mid+1);
-        merge(arr,left,mid,right, if_count, swap_count);
+    if_count = 0;
+    swap_count = 0;
 
-        auto end_time = std::chrono::high_resolution_clock::now();
-        sort_time += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
-    }
-    else{
-        if(left>=right){return;}
-        size_t mid = left + (right - left)/2; // вместо (left+right)/2
-        merge_sort(arr, mid, sort_time, if_count, swap_count, first_call, left);
-        merge_sort(arr, right, sort_time, if_count, swap_count, first_call, mid+1);
-        merge(arr,left,mid,right, if_count, swap_count);
-    }
+    merge_sort(arr, arrlen-1, if_count, swap_count, 0);
+
+    auto end_time = std::chrono::high_resolution_clock::now();
+    sort_time += std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 }
 
 void Shell_sort(int* arr, size_t arrlen, long long &sort_time, long long &if_count, long long &swap_count){
@@ -131,6 +126,46 @@ void Shell_sort(int* arr, size_t arrlen, long long &sort_time, long long &if_cou
             arr[j + gap] = temp; swap_count++;
         }
     }
+    auto end_time = std::chrono::high_resolution_clock::now();
+    sort_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
+}
+
+void quick_sort(int* arr, int left, int right, long long &if_count, long long &swap_count) {
+    if (left >= right) return;
+    
+    int pivot = arr[left];
+    int l = left;
+    int r = right;
+    
+    while (l <= r) {
+        while (arr[l] < pivot) {
+            l++;
+            if_count++;
+        } if_count++;
+        
+        while (arr[r] > pivot) {
+            r--;
+            if_count++;
+        } if_count++;
+        
+        if (l <= r) {
+            std::swap(arr[l], arr[r]); swap_count++;
+            l++;
+            r--;
+        }
+    }
+    
+    if (left < r) quick_sort(arr, left, r, if_count, swap_count);
+    if (l < right) quick_sort(arr, l, right, if_count, swap_count);
+}
+void quick_sort_ob(int* arr, size_t arrlen, long long &sort_time, long long &if_count, long long &swap_count) {
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    if_count = 0;
+    swap_count = 0;
+
+    quick_sort(arr, 0, arrlen - 1, if_count, swap_count);
+    
     auto end_time = std::chrono::high_resolution_clock::now();
     sort_time = std::chrono::duration_cast<std::chrono::microseconds>(end_time - start_time).count();
 }
